@@ -3,13 +3,16 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from 'axios'
 
+
+const cardsContainer = document.querySelector('.cards')
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
     data in order to use it to build your component function
 
-    Skip to STEP 3 (line 34).
+    Skip to STEP 3.
 */
 
 /*
@@ -30,6 +33,8 @@
 
 const followersArray = [];
 
+
+
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -49,6 +54,69 @@ const followersArray = [];
       </div>
     </div>
 */
+function creator(obj){
+  const card = document.createElement('div')
+  const userImg = document.createElement('img')
+  
+  const info = document.createElement('div')
+  
+  const name = document.createElement('h3')
+  const username = document.createElement('p')
+  const location = document.createElement('p')
+  const profile = document.createElement('p')
+  const followers = document.createElement('p')
+  const following = document.createElement('p')
+  const bio = document.createElement('p')
+
+  
+  card.appendChild(userImg)
+  card.appendChild(info)
+  info.appendChild(name)
+  info.appendChild(username)
+  info.appendChild(location)
+  info.appendChild(profile)
+  info.appendChild(followers)
+  info.appendChild(following)
+  info.appendChild(bio)
+
+  card.classList.add('card')
+  info.classList.add('card-info')
+  name.classList.add('name')
+  username.classList.add('name')
+
+  userImg.src = obj.avatar_url
+  name.textContent = obj.name
+  username.textContent = obj.login
+  location.textContent = `Location: ${obj.location} ` //null i don't have my location on github
+  profile.textContent = `Profile ${obj.html_url}`
+  followers.textContent = `Followers: ${obj.followers}`
+  following.textContent = `Following: ${obj.following}`
+  bio.textContent = `Followers: ${obj.bio}`
+  return card
+}
+function getRequest(user){
+  axios.get(`https://api.github.com/users/${user}`)
+    // .then(res => {
+    //   console.log(res.data.login)
+    // })
+    .then(res => {
+      cardsContainer.appendChild(creator(res.data))
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    .finally(() => {
+      console.log('done')
+})}
+
+getRequest('oddistoddist')
+
+const LSInstructors = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell']
+
+LSInstructors.forEach((x) => {
+  getRequest(x)
+})
+
 
 /*
   List of LS Instructors Github username's:
